@@ -22,29 +22,7 @@ public class FortuneTellerController {
 
     @GetMapping("/subscribe/{subscriberId}")
     public SseEmitter streamSse(@PathVariable String subscriberId) {
-        SseEmitter emitter = new SseEmitter();
-        log.info("Emitter created for subscriberId {}", subscriberId);
-        SseEmitterManager.addEmitter(subscriberId, emitter);
-
-        // Set a timeout for the SSE connection
-        emitter.onTimeout(() -> {
-            log.info("Emitter timed out for {}", subscriberId);
-            emitter.complete();
-            SseEmitterManager.removeEmitter(subscriberId);
-        });
-
-        // Set a handler for client disconnect
-        emitter.onCompletion(() -> {
-            log.info("SSE completed for {}", subscriberId);
-            SseEmitterManager.removeEmitter(subscriberId);
-        });
-
-        emitter.onError(e -> {
-            SseEmitterManager.removeEmitter(subscriberId);
-            log.error("SSE error for {}",subscriberId, e);
-        });
-
-        return emitter;
+       return service.addEmitter(subscriberId);
     }
 }
 
