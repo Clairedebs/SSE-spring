@@ -30,7 +30,7 @@ public class SseEmitterManager {
             return;
         }
         try {
-            Response response = new Response(data. toString());
+            Response response = new Response(data.toString());
             emitter.send(SseEmitter.event()
                     .data(response)
             );
